@@ -7,7 +7,7 @@ add_library(makineai-live SHARED
     src/plugin.cpp
     src/live_core.cpp
     src/capture.cpp
-    src/ocr_windows.cpp
+    src/ocr_rapid.cpp
 )
 
 target_include_directories(makineai-live PRIVATE
@@ -26,8 +26,4 @@ set_target_properties(makineai-live PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/release"
 )
 
-configure_file(
-    ${CMAKE_SOURCE_DIR}/manifest.json
-    ${CMAKE_BINARY_DIR}/release/manifest.json
-    COPYONLY
-)
+configure_file(${CMAKE_SOURCE_DIR}/manifest.json ${CMAKE_BINARY_DIR}/release/manifest.json COPYONLY)

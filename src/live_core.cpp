@@ -1,9 +1,10 @@
 /**
  * Live plugin core — initialization, shutdown, and pipeline coordination.
+ * Uses RapidOcrOnnx prebuilt DLL for native OCR (no Python, no scripts).
  */
 
 #include "capture.h"
-#include "ocr_windows.h"
+#include "ocr_rapid.h"
 #include <memory>
 #include <string>
 
@@ -17,38 +18,32 @@ bool init(const char* dataPath)
 {
     s_dataPath = dataPath;
 
-    // Initialize screen capture (GDI fallback)
     s_capture = std::make_unique<ScreenCapture>();
     s_capture->init(CaptureMethod::Auto);
 
-    // Initialize Windows OCR engine
-    s_ocr = std::make_unique<WindowsOcrEngine>();
-    s_ocr->init(s_dataPath);
+    s_ocr = std::make_unique<RapidOcrEngine>();
+    if (!s_ocr->init(s_dataPath)) {
+        // Non-fatal — plugin loads but OCR unavailable
+        return true;
+    }
 
     return true;
 }
 
 void shutdown()
 {
-    if (s_ocr) {
-        s_ocr->shutdown();
-        s_ocr.reset();
-    }
-    if (s_capture) {
-        s_capture->shutdown();
-        s_capture.reset();
-    }
+    if (s_ocr) { s_ocr->shutdown(); s_ocr.reset(); }
+    if (s_capture) { s_capture->shutdown(); s_capture.reset(); }
 }
 
 bool ready()
 {
-    return s_capture != nullptr && s_ocr != nullptr && s_ocr->isReady();
+    return s_capture != nullptr;
 }
 
-// Exported test function — capture + OCR a window region
 std::string captureAndRecognize(void* windowHandle, int x, int y, int w, int h)
 {
-    if (!s_capture || !s_ocr) return "";
+    if (!s_capture || !s_ocr || !s_ocr->isReady()) return "";
 
     CapturedFrame frame;
     CaptureRegion region{x, y, w, h};
@@ -63,7 +58,6 @@ std::string captureAndRecognize(void* windowHandle, int x, int y, int w, int h)
         if (!text.empty()) text += "\n";
         text += box.text;
     }
-
     return text;
 }
 
