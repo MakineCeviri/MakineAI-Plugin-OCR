@@ -6,7 +6,7 @@
     "category": "translation",
     "description": "Real-time screen OCR and translation overlay with DXGI capture and multi-engine translation",
     "author": "Makine Team",
-    "license": "GPL-3.0",
+    "license": "AGPL-3.0-only WITH Commons-Clause",
     "homepage": "https://github.com/MakineCeviri/Makine-LauncherPlugin-Live",
     "entry": "makine-live.dll",
     "dependencies": [],
