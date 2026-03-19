@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.25)
-project(makineai-live LANGUAGES CXX)
+project(makine-live LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_library(makineai-live SHARED
+add_library(makine-live SHARED
     src/plugin.cpp
     src/live_core.cpp
     src/capture.cpp
@@ -11,18 +11,18 @@ add_library(makineai-live SHARED
     src/translator.cpp
 )
 
-target_include_directories(makineai-live PRIVATE
+target_include_directories(makine-live PRIVATE
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/src
 )
 
 if(WIN32)
-    target_link_libraries(makineai-live PRIVATE gdi32 winhttp d3d11 dxgi)
+    target_link_libraries(makine-live PRIVATE gdi32 winhttp d3d11 dxgi)
 endif()
 
-set_target_properties(makineai-live PROPERTIES
+set_target_properties(makine-live PROPERTIES
     PREFIX ""
-    OUTPUT_NAME "makineai-live"
+    OUTPUT_NAME "makine-live"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/release"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/release"
 )

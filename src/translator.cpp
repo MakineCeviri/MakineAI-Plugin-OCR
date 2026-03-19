@@ -171,7 +171,7 @@ void Translator::ensureSession()
 {
 #ifdef _WIN32
     if (!m_hSession) {
-        m_hSession = WinHttpOpen(L"MakineAI-Live/1.0",
+        m_hSession = WinHttpOpen(L"Makine-Live/1.0",
             WINHTTP_ACCESS_TYPE_DEFAULT_PROXY, nullptr, nullptr, 0);
     }
 #endif
